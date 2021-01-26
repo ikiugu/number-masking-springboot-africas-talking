@@ -16,6 +16,13 @@
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+	<repositories>
+		<repository>
+			<id>africastalking</id>
+			<name>AfricasTalking</name>
+			<url>http://dl.bintray.com/africastalking/java</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -40,6 +47,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.africastalking</groupId>
+			<artifactId>core</artifactId>
+			<version>3.4.5</version>
 		</dependency>
 	</dependencies>
 
