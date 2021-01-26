@@ -33,7 +33,6 @@ public class CustomerController {
     public boolean createCustomer(@RequestBody CustomerDto customerDto) {
 
         if (doesCustomerExist(customerDto.getCustomer())) {
-            logger.info("customer doesn't exist");
             return false;
         }
 
@@ -56,6 +55,7 @@ public class CustomerController {
 
     private boolean doesCustomerExist(Customer customer) {
         Optional<Customer> cust = customerRepository.findCustomerByPhoneNumber(customer.getPhoneNumber());
+        logger.info("customer exists? " + cust.isPresent());
         return cust.isPresent();
     }
 
@@ -72,6 +72,7 @@ public class CustomerController {
         Optional<Customer> optionalCustomer = customerRepository.findCustomerByPhoneNumber(customerPhoneNumber);
 
         if (optionalCustomer.isEmpty()) {
+            logger.info("customer does not exist");
             return false;
         }
 
@@ -79,7 +80,6 @@ public class CustomerController {
 
 
         Customer customer = optionalCustomer.get();
-        logger.info("customer is" + customer);
         customer.setContacted(customerDto.getCustomer().isContacted());
         customer.setComment(customerDto.getCustomer().getComment());
 
@@ -87,8 +87,10 @@ public class CustomerController {
             customerRepository.save(customer);
         } catch (Exception ex) {
             updated = false;
+            logger.error("customer updating failed");
         }
 
+        logger.info("customer updating was successful");
         return updated;
     }
 }

@@ -3,6 +3,8 @@ package com.ikiugu.numbermasking.controllers;
 import com.ikiugu.numbermasking.models.Agent;
 import com.ikiugu.numbermasking.models.Customer;
 import com.ikiugu.numbermasking.repositories.AgentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.Optional;
 @RequestMapping("/agent")
 public class AgentController {
     private final AgentRepository agentRepository;
+    Logger logger = LoggerFactory.getLogger(AgentController.class);
 
     public AgentController(AgentRepository agentRepository) {
         this.agentRepository = agentRepository;
@@ -41,8 +44,10 @@ public class AgentController {
             agentRepository.save(newAgent);
         } catch (Exception ex) {
             saved = false;
+            logger.error("saving the agent failed");
         }
 
+        logger.info("saving the agent was successful");
         return saved;
     }
 
@@ -54,6 +59,7 @@ public class AgentController {
      */
     private boolean doesAgentExist(Agent agent) {
         Optional<Agent> agentOptional = agentRepository.findAgentByPhoneNumber(agent.getPhoneNumber());
+        logger.info("does agent exist? " + agentOptional.isPresent());
         return agentOptional.isPresent();
     }
 
@@ -71,6 +77,8 @@ public class AgentController {
         if (agent.isPresent()) {
             customers = agent.get().getCustomers();
         }
+
+        logger.info("Agent leads are " + customers.size());
 
         return customers;
     }
