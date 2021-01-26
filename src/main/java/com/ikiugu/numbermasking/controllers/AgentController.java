@@ -1,12 +1,12 @@
 package com.ikiugu.numbermasking.controllers;
 
 import com.ikiugu.numbermasking.models.Agent;
+import com.ikiugu.numbermasking.models.Customer;
 import com.ikiugu.numbermasking.repositories.AgentRepository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -55,5 +55,23 @@ public class AgentController {
     private boolean doesAgentExist(Agent agent) {
         Optional<Agent> agentOptional = agentRepository.findAgentByPhoneNumber(agent.getPhoneNumber());
         return agentOptional.isPresent();
+    }
+
+    /**
+     * This method returns leads (customers) for a particular agent using their phone number
+     *
+     * @param phoneNumber -> agent phone number
+     * @return -> list of customers
+     */
+    @GetMapping("/leads/{phoneNumber}")
+    public List<Customer> getAgentLeads(@PathVariable String phoneNumber) {
+        List<Customer> customers = new ArrayList<>();
+        Optional<Agent> agent = agentRepository.findAgentByPhoneNumber(phoneNumber);
+
+        if (agent.isPresent()) {
+            customers = agent.get().getCustomers();
+        }
+
+        return customers;
     }
 }

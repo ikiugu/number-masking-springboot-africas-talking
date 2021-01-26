@@ -2,10 +2,9 @@ package com.ikiugu.numbermasking.models;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity(name = "agent")
@@ -16,4 +15,7 @@ public class Agent {
     private long id;
     private String name;
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "agent")
+    private List<Customer> customers = new ArrayList<>();
 }
