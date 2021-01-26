@@ -82,6 +82,7 @@ public class CustomerController {
         Customer customer = optionalCustomer.get();
         customer.setContacted(customerDto.getCustomer().isContacted());
         customer.setComment(customerDto.getCustomer().getComment());
+        customer.setCalling(customerDto.getCustomer().isCalling());
 
         try {
             customerRepository.save(customer);
