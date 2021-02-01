@@ -67,7 +67,7 @@ public class CustomerController {
      * @return -> boolean whether the update was successful
      */
     @PatchMapping("/{customerPhoneNumber}")
-    public boolean updateCustomer(@RequestBody CustomerDto customerDto, @PathVariable String customerPhoneNumber) {
+    public boolean updateCustomer(@RequestBody Customer customerDto, @PathVariable String customerPhoneNumber) {
 
         Optional<Customer> optionalCustomer = customerRepository.findCustomerByPhoneNumber(customerPhoneNumber);
 
@@ -80,9 +80,9 @@ public class CustomerController {
 
 
         Customer customer = optionalCustomer.get();
-        customer.setContacted(customerDto.getCustomer().isContacted());
-        customer.setComment(customerDto.getCustomer().getComment());
-        customer.setCalling(customerDto.getCustomer().isCalling());
+        customer.setContacted(customerDto.isContacted());
+        customer.setComment(customerDto.getComment() != null ? customerDto.getComment() : "");
+        customer.setCalling(customerDto.isCalling());
 
         try {
             customerRepository.save(customer);
